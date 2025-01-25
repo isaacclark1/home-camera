@@ -7,6 +7,7 @@ import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, WebSocket
 import logging
+import libcamera
 
 # StreamingOutput manages video frames in memory and handles safe, thread-based access
 class StreamingOutput(io.BufferedIOBase):
@@ -40,7 +41,8 @@ class JpegStream:
     self.picam2 = Picamera2()
     
     video_config = self.picam2.create_video_configuration(
-      main={"size": (1920, 1080)} # Congigure video resolution
+      main={"size": (2560, 1440)}, # Congigure video resolution
+      transform=libcamera.Transform(rotation=180) # Rotate the camera 180 degrees - modify as necessary depending on how the camera is mounted
     )
     
     self.picam2.configure(video_config) # Apply camera configuration
